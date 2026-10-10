@@ -6,3 +6,6 @@ public/uploads/*
 !public/uploads/.gitkeep
 scripts/preview-logo.png
 *.log
+DEPLOY.md
+client-preview/
+client-preview.zip

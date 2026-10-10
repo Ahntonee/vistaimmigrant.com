@@ -27,7 +27,7 @@
 - **Dependencies.** `npm audit` reported a moderate `sanitize-html` XSS advisory during the build. `npm audit fix` upgraded it to 2.18, whose `htmlparser2@12` is ESM-only and fails `require()` on Node 20.18, so `package.json` has an `overrides` entry pinning `htmlparser2` to `^10` (dual CJS/ESM). `npm audit` is clean and the XSS payload tests pass. If you deploy on Node ≥ 20.19 / 22 you can drop the override.
 
 ## Not built (and how to add it)
-- Lighthouse numbers on the deployed site (measure on the real domain behind nginx + gzip/brotli; see README).
+- Lighthouse numbers on the deployed site (measure on the real domain behind nginx + gzip/brotli).
 - Path-based Spanish routes with `hreflang`.
 - Per-field translation of CMS content.
 - Redis-backed rate limiting for multi-instance deployments.

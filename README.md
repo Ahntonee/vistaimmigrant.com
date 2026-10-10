@@ -38,39 +38,11 @@ Other scripts: `npm test` (133 end-to-end + security checks on a throwaway DB), 
 ### Roles
 - **Owner** — everything. **Editor** — content, media, SEO, redirects, appointments, messages. **Staff** — appointments, messages, closed dates only. Enforced on the server for every route.
 
-## Deploy (VPS with nginx + pm2)
-
-```bash
-# on the server
-git clone <repo> /var/www/vista && cd /var/www/vista
-npm ci --omit=dev
-cp .env.example .env && nano .env     # NODE_ENV=production, SESSION_SECRET, TRUST_PROXY=true, ADMIN_PASSWORD, SMTP_*
-npm run seed
-npm i -g pm2 && pm2 start src/app.js --name vista && pm2 save && pm2 startup
-```
-
-nginx (TLS via certbot):
-
-```nginx
-server {
-  server_name example.com www.example.com;
-  client_max_body_size 10m;
-  location / {
-    proxy_pass http://127.0.0.1:3000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header X-Forwarded-Proto $scheme;
-  }
-}
-```
-
-After the domain is live: set **Public site URL** in *Business settings → SEO* (`https://yourdomain.com`) — it drives canonical URLs, the sitemap, structured data and email links.
-
-### Backups & restore
+## Backups & restore
 - Dashboard → Backups → *Create backup now* (DB snapshot, last 14 kept), or cron `0 3 * * * cd /var/www/vista && node scripts/backup.js` (DB + uploads).
 - Restore: stop the app, replace `data/vista.db` with the backup (delete `vista.db-wal` / `-shm`), restore `public/uploads` if needed, start the app.
 
-### Email
+## Email
 Without `SMTP_HOST`, every email (appointment confirmations, office notifications, password resets) is recorded under *Email outbox* instead of being sent. Set `SMTP_*` in `.env` to send for real (Gmail users need an app password).
 
 ## Languages
