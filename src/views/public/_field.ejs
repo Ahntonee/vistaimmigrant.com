@@ -1,0 +1,17 @@
+<%
+const id = 'f-' + name;
+const val = (values && values[name]) || '';
+const er = errors && errors[name];
+%><div>
+  <label for="<%= id %>"><%= label %><% if (typeof req_ !== 'undefined' && req_) { %> <span aria-hidden="true">*</span><% } %></label>
+  <% if (type === 'textarea') { %>
+    <textarea id="<%= id %>" name="<%= name %>" <%- (typeof req_ !== 'undefined' && req_) ? 'required' : '' %> maxlength="<%= typeof max !== 'undefined' ? max : 3000 %>" <%- er ? 'aria-invalid="true" aria-describedby="' + id + '-e"' : '' %>><%= val %></textarea>
+  <% } else if (type === 'select') { %>
+    <select id="<%= id %>" name="<%= name %>" <%- (typeof req_ !== 'undefined' && req_) ? 'required' : '' %> <%- er ? 'aria-invalid="true" aria-describedby="' + id + '-e"' : '' %>>
+      <% opts.forEach(function (o) { const ov = Array.isArray(o) ? o[0] : o, ol = Array.isArray(o) ? o[1] : o; %><option value="<%= ov %>" <%- ov === val ? 'selected' : '' %>><%= ol %></option><% }) %>
+    </select>
+  <% } else { %>
+    <input id="<%= id %>" type="<%= type %>" name="<%= name %>" value="<%= val %>" <%- (typeof req_ !== 'undefined' && req_) ? 'required' : '' %> maxlength="<%= typeof max !== 'undefined' ? max : 160 %>" <%- typeof auto !== 'undefined' ? 'autocomplete="' + auto + '"' : '' %> <%- typeof extra !== 'undefined' ? extra : '' %> <%- er ? 'aria-invalid="true" aria-describedby="' + id + '-e"' : '' %>>
+  <% } %>
+  <% if (er) { %><p class="err" id="<%= id %>-e" role="alert"><%= er %></p><% } %>
+</div>

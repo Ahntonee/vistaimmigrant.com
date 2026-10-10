@@ -1,0 +1,13 @@
+<%- include('_authtop', { title: 'Sign in' }) %>
+<h1>Sign in</h1>
+<% if (info) { %><div class="flash" role="status"><%= info %></div><% } %>
+<% if (error) { %><div class="flash warn" role="alert"><%= error %></div><% } %>
+<form class="form" method="post" action="/admin/login">
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <input type="hidden" name="next" value="<%= next %>">
+  <div><label for="email">Email</label><input id="email" type="email" name="email" value="<%= email %>" autocomplete="username" required autofocus></div>
+  <div><label for="pw">Password</label><input id="pw" type="password" name="password" autocomplete="current-password" required></div>
+  <button class="btn btn-navy" type="submit">Sign in</button>
+  <p class="small" style="text-align:center;margin:0"><a href="/admin/forgot">Forgot your password?</a></p>
+</form>
+<%- include('_authbot') %>

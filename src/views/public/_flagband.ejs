@@ -1,0 +1,8 @@
+<div class="flagband" role="group" aria-label="Flags of the communities we serve">
+  <div class="wrap">
+    <div class="flagtrack">
+      <% flagsRow.forEach(function (f) { %><img src="/flags/<%= f[0] %>.svg" alt="<%= f[1] %> flag" width="38" height="28" loading="lazy"><% }) %>
+      <% flagsRow.forEach(function (f) { %><img src="/flags/<%= f[0] %>.svg" alt="" aria-hidden="true" width="38" height="28" loading="lazy"><% }) %>
+    </div>
+  </div>
+</div>

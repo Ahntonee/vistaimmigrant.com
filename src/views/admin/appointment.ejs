@@ -1,0 +1,19 @@
+<div class="two">
+  <form class="card form" method="post" action="/admin/appointments/<%= a.id %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+    <h2>Manage</h2>
+    <div><label for="st">Status</label><select id="st" name="status"><% A_STATUS.forEach(function (s) { %><option <%= s === a.status ? 'selected' : '' %>><%= s %></option><% }) %></select></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div><label for="dt">Date</label><input id="dt" type="date" name="date" value="<%= a.date %>"></div>
+      <div><label for="tm">Time</label><select id="tm" name="time"><% SLOTS.forEach(function (s) { %><option value="<%= s %>" <%= s === a.time ? 'selected' : '' %>><%= slotLabel(s) %></option><% }) %></select></div>
+    </div>
+    <div><label for="nt">Internal note (not shown to the client)</label><textarea id="nt" name="admin_note" maxlength="1500"><%= a.admin_note %></textarea></div>
+    <% if (a.email) { %><div class="check"><input type="checkbox" id="em" name="email_client" value="1"><label for="em">Email the client about this update (<%= a.email %>)</label></div><% } else { %><p class="help">No email on file. Call the client to confirm.</p><% } %>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn btn-navy" type="submit">Save</button><a class="btn btn-line" href="/admin/appointments">Back</a>
+      <button class="btn btn-danger" type="submit" formaction="/admin/appointments/<%= a.id %>/delete" data-confirm="Permanently delete this appointment and the person's data?" style="margin-left:auto">Delete</button></div>
+  </form>
+  <div class="card"><h2>Request</h2>
+    <dl class="kv"><dt>Name</dt><dd><%= a.name %></dd><dt>Phone</dt><dd><a href="tel:<%= a.phone %>"><%= a.phone %></a></dd><dt>Email</dt><dd><%= a.email || '—' %></dd><dt>Language</dt><dd><%= a.language %></dd><dt>Service</dt><dd><%= a.service || '—' %></dd><dt>Submitted</dt><dd><%= a.created_at %> UTC</dd><dt>Consent</dt><dd><%= a.consent_at || '—' %> UTC</dd></dl>
+    <% if (a.note) { %><h2 style="margin-top:1rem">Their note</h2><div class="pre"><%= a.note %></div><% } %>
+  </div>
+</div>

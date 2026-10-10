@@ -1,0 +1,15 @@
+<%- include('_head', { title: p.title, eyebrow: p.eyebrow, lead: p.excerpt, crumbs: [{ name: p.title }] }) %>
+<section>
+  <div class="wrap <%= p.template === 'default' ? 'narrow' : 'split' %>">
+    <div class="prose"><%- p.body %></div>
+    <% if (p.template !== 'default') { %>
+    <aside class="infocard">
+      <h3>Talk to us</h3><p>Call <a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a> or request a time.</p>
+      <div class="btn-row"><a class="btn btn-navy btn-sm" href="/appointment"><%= t('cta.schedule') %></a></div>
+      <% if (svc.length) { %><h3>Services</h3><ul class="checklist"><% svc.forEach(function (s) { %><li><a href="/services/<%= s.slug %>"><%= s.title %></a></li><% }) %></ul><% } %>
+      <h3><%= t('foot.hours') %></h3><p><%= g('biz.hours') %><br><%= g('biz.hours_note') %></p>
+    </aside>
+    <% } %>
+  </div>
+</section>
+<% if (p.template !== 'default') { %><%- include('_flagband') %><% } %>

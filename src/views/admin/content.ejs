@@ -1,0 +1,21 @@
+<div class="tabs" role="tablist">
+  <% Object.keys(GROUPS).forEach(function (k) { if (OWNER_ONLY.indexOf(k) > -1 && user.role !== 'owner') return; %><a class="<%= k === group ? 'on' : '' %>" href="/admin/content/<%= k %>"><%= GROUPS[k] %></a><% }) %>
+</div>
+<form class="form" method="post" action="/admin/content/<%= group %>" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <% if (Object.keys(errors).length) { %><div class="flash warn" role="alert">Please fix the highlighted fields.</div><% } %>
+  <div class="card" style="display:grid;gap:1.1rem;max-width:860px">
+    <% fields.forEach(function (f) { const key = f[1], label = f[2], type = f[3], id = 'c-' + key.replace(/\./g, '-'), v = values[key] || '', er = errors[key]; %>
+    <div>
+      <label for="<%= id %>"><%= label %></label>
+      <% if (type === 'richtext') { %><div class="rte" data-rte><textarea id="<%= id %>" name="<%= key %>" hidden><%= v %></textarea></div>
+      <% } else if (type === 'textarea') { %><textarea id="<%= id %>" name="<%= key %>" maxlength="4000" <%- er ? 'aria-invalid="true"' : '' %>><%= v %></textarea>
+      <% } else if (IMAGE_KEYS.indexOf(key) > -1) { %><div class="field-img"><input type="text" id="<%= id %>" name="<%= key %>" value="<%= v %>" placeholder="/uploads/…" <%- er ? 'aria-invalid="true"' : '' %>><button class="btn btn-line sm" type="button" data-pick="<%= id %>">Choose</button></div>
+      <% } else { %><input type="text" id="<%= id %>" name="<%= key %>" value="<%= v %>" maxlength="300" <%- er ? 'aria-invalid="true"' : '' %>><% } %>
+      <% if (er) { %><p class="err" role="alert"><%= er %></p><% } %>
+    </div>
+    <% }) %>
+  </div>
+  <div class="sticky-save"><button class="btn btn-navy" type="submit">Save <%= GROUPS[group] %></button><a class="btn btn-line" href="/" target="_blank" rel="noopener">View site ↗</a></div>
+</form>
+<dialog class="picker" id="picker" aria-label="Media library"><h2 style="font-family:var(--serif)">Choose an image</h2><div class="pgrid" id="pgrid"></div><button class="btn btn-line" type="button" id="picker-close">Close</button></dialog>

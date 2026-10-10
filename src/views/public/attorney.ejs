@@ -1,0 +1,24 @@
+<% const name = g('attorney.name'); const initials = name.replace(/,.*$/, '').split(/\s+/).filter(Boolean); const mono = (initials[0] || 'V')[0] + (initials[initials.length - 1] || '')[0]; const areas = g('attorney.areas').split('\n').map(function (x) { return x.trim(); }).filter(Boolean); %>
+<%- include('_head', { title: 'Meet Our Attorney', eyebrow: 'Legal representation', crumbs: [{ name: 'Meet Our Attorney' }] }) %>
+<section>
+  <div class="wrap split even">
+    <div>
+      <% if (g('attorney.photo')) { %><img class="portrait" src="<%= g('attorney.photo') %>" alt="<%= g('attorney.photo_alt') %>" width="640" height="800"><% } else { %><div class="mono" role="img" aria-label="<%= name %>"><%= mono %></div><% } %>
+    </div>
+    <div>
+      <h2><%= name %></h2>
+      <p class="lead"><%= g('attorney.title') %></p>
+      <p><strong><%= g('attorney.note') %></strong></p>
+      <div class="prose"><%- g('attorney.bio') %></div>
+      <% if (g('attorney.bar') || g('attorney.education') || g('attorney.languages')) { %>
+      <dl class="facts">
+        <% if (g('attorney.bar')) { %><dt>Bar admission</dt><dd><%= g('attorney.bar') %></dd><% } %>
+        <% if (g('attorney.education')) { %><dt>Education</dt><dd><%= g('attorney.education') %></dd><% } %>
+        <% if (g('attorney.languages')) { %><dt>Languages</dt><dd><%= g('attorney.languages') %></dd><% } %>
+      </dl><% } %>
+      <% if (areas.length) { %><h3>Practice areas</h3><ul class="checklist"><% areas.forEach(function (a) { %><li><%= a %></li><% }) %></ul><% } %>
+      <div class="btn-row"><a class="btn btn-navy" href="/appointment"><%= t('cta.schedule') %></a><a class="btn btn-line" href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= t('cta.call') %> — <%= g('biz.phone') %></a></div>
+      <div class="note">Legal advice and legal representation are provided by licensed attorneys for matters they accept. Vista Immigrant Support Inc. is not a law firm.</div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+<%- include('_head', { title: 'Request received', eyebrow: 'Thank you' }) %>
+<section>
+  <div class="wrap narrow">
+    <p class="lead">We received your request for <strong><%= u.fmtDate(a.date) %> at <%= slotLabel(a.time) %></strong>. A member of our team will confirm by phone<%= a.email ? ' or email' : '' %>.</p>
+    <p>Until it is confirmed, this is a request and not a booked time. If you need to change anything, call <a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a>.</p>
+    <div class="btn-row"><a class="btn btn-navy" href="/appointment/calendar.ics">Add to my calendar</a><a class="btn btn-line" href="/">Back to home</a></div>
+    <div class="note">Visit us at <%= g('biz.street') %>, <%= g('biz.city') %>, <%= g('biz.state') %> <%= g('biz.zip') %>. Please do not email sensitive details like your A-Number or case information. We will discuss those in private.</div>
+  </div>
+</section>

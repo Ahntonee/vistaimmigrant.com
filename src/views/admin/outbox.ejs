@@ -1,0 +1,5 @@
+<% if (!smtp) { %><div class="flash warn">SMTP is not configured, so emails are only recorded here. Set SMTP_HOST, SMTP_USER and SMTP_PASS in the environment to send them.</div><% } %>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>When (UTC)</th><th>To</th><th>Subject</th><th>Status</th></tr></thead><tbody>
+<% if (!rows.length) { %><tr><td colspan="4" class="dim">No emails yet.</td></tr><% } %>
+<% rows.forEach(function (r) { %><tr><td class="small dim"><%= r.created_at %></td><td><%= r.to_addr %></td><td><details><summary><%= r.subject %></summary><div class="pre small" style="margin-top:.5rem"><%= stripTags(r.html).slice(0, 900) %></div></details></td><td><span class="pill <%= r.sent ? 'ok' : (r.error ? 'err' : 'draft') %>"><%= r.sent ? 'sent' : (r.error ? 'failed' : 'recorded') %></span><% if (r.error) { %><br><span class="small dim"><%= r.error %></span><% } %></td></tr><% }) %>
+</tbody></table></div>

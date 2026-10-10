@@ -1,0 +1,13 @@
+{
+  "name": "Vista Immigrant Support Inc.",
+  "short_name": "Vista",
+  "description": "The Immigrant Place — Everyone Is Welcome",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fbf8f2",
+  "theme_color": "#0c2a63",
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

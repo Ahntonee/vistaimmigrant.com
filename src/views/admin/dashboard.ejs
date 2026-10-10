@@ -1,0 +1,48 @@
+<%
+function bars(vals, cls) {
+  const max = Math.max.apply(null, vals.concat([1])), w = 600 / vals.length;
+  return vals.map(function (v, i) { const h = Math.round((v / max) * 90); return '<rect class="' + cls + '" x="' + (i * w + 2) + '" y="' + (100 - h) + '" width="' + (w - 4) + '" height="' + Math.max(h, v ? 2 : 0) + '" rx="2"><title>' + days[i] + ': ' + v + '</title></rect>'; }).join('');
+}
+const pvTotal = pv.reduce(function (a, b) { return a + b; }, 0), subTotal = sub.reduce(function (a, b) { return a + b; }, 0);
+%>
+<% if (health.needs2fa) { %><div class="flash warn">Owner accounts should use two-step sign-in. <a href="/admin/account/2fa">Set it up</a>.</div><% } %>
+<div class="grid4">
+  <a class="stat" href="/admin/appointments?status=requested&when=all"><b><%= stats.newAppts %></b><span>Appointment requests waiting</span></a>
+  <a class="stat" href="/admin/messages"><b><%= stats.newMsgs %></b><span>Unread messages</span></a>
+  <a class="stat" href="/admin/posts?status=published"><b><%= stats.published %></b><span>Published posts</span></a>
+  <a class="stat" href="/admin/posts?status=draft"><b><%= stats.drafts %></b><span>Drafts &amp; scheduled</span></a>
+</div>
+<div class="card">
+  <h2>Quick actions</h2>
+  <div class="toolbar" style="margin:0">
+    <a class="btn btn-navy sm" href="/admin/posts/new">New blog post</a><a class="btn btn-line sm" href="/admin/pages/new">New page</a>
+    <a class="btn btn-line sm" href="/admin/closed-dates/new">Add closed date</a><a class="btn btn-line sm" href="/admin/media">Upload media</a><a class="btn btn-line sm" href="/admin/content/home">Edit home page text</a>
+  </div>
+</div>
+<div class="two">
+  <div>
+    <div class="card"><h2>Upcoming appointments</h2>
+      <% if (!upcoming.length) { %><p class="dim">Nothing scheduled.</p><% } else { %><div class="tblwrap"><table class="tbl"><thead><tr><th>When</th><th>Name</th><th>Status</th></tr></thead><tbody>
+        <% upcoming.forEach(function (a) { %><tr><td><a href="/admin/appointments/<%= a.id %>"><%= fmtDate(a.date) %> · <%= a.time %></a></td><td><%= a.name %><br><span class="dim small"><%= a.service %></span></td><td><span class="pill <%= a.status %>"><%= a.status %></span></td></tr><% }) %>
+      </tbody></table></div><% } %>
+    </div>
+    <div class="card"><h2>Last 30 days</h2>
+      <svg class="chart" viewBox="0 0 600 100" preserveAspectRatio="none" role="img" aria-label="Page views per day"><%- bars(pv, 'a') %></svg>
+      <div class="legend"><span><i style="background:var(--navy)"></i>Page views (<%= pvTotal %>)</span></div>
+      <svg class="chart" viewBox="0 0 600 100" preserveAspectRatio="none" role="img" aria-label="Form submissions per day" style="margin-top:1rem"><%- bars(sub, 'b') %></svg>
+      <div class="legend"><span><i style="background:var(--gold)"></i>Messages + appointment requests (<%= subTotal %>)</span></div>
+      <p class="help dim">Privacy-friendly counter: no cookies, no IP storage, bots excluded.</p>
+    </div>
+  </div>
+  <div>
+    <div class="card"><h2>Latest messages</h2>
+      <% if (!latestMsgs.length) { %><p class="dim">No messages yet.</p><% } else { %><% latestMsgs.forEach(function (m) { %><p style="margin-bottom:.6rem"><a href="/admin/messages/<%= m.id %>"><strong><%= m.name %></strong></a> <span class="pill <%= m.status %>"><%= m.status %></span><br><span class="dim small"><%= m.subject || m.message.slice(0, 70) %></span></p><% }) %><% } %>
+    </div>
+    <div class="card"><h2>System</h2>
+      <div class="health"><div><b>Database</b><%= (health.dbSize / 1024).toFixed(0) %> KB</div><div><b>Last backup</b><%= health.lastBackup || 'none yet' %></div><div><b>Email (SMTP)</b><span class="pill <%= health.smtp ? 'ok' : 'err' %>"><%= health.smtp ? 'configured' : 'not set' %></span></div></div>
+    </div>
+    <% if (user.role === 'owner') { %><div class="card"><h2>Recent activity</h2>
+      <% activity.forEach(function (a) { %><p class="small" style="margin-bottom:.45rem"><strong><%= a.action %></strong> <%= a.entity %> <span class="dim"><%= a.detail %></span><br><span class="dim"><%= a.user_email || 'visitor' %> · <%= a.created_at %> UTC</span></p><% }) %>
+      <a class="small" href="/admin/audit">Full log →</a></div><% } %>
+  </div>
+</div>

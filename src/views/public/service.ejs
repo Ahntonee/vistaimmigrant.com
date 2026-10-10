@@ -1,0 +1,20 @@
+<%- include('_head', { title: s.title, eyebrow: s.category === 'legal' ? 'Legal representation' : 'Support service', lead: s.summary, crumbs: [{ name: 'Immigration Services', path: '/services' }, { name: s.title }] }) %>
+<section>
+  <div class="wrap split">
+    <div class="prose">
+      <%- s.body %>
+      <% if (s.who_for) { %><h2>Who this is for</h2><%- s.who_for %><% } %>
+      <% if (s.what_to_expect) { %><h2>What to expect</h2><%- s.what_to_expect %><% } %>
+      <% if (s.what_to_bring) { %><h2>What to bring</h2><%- s.what_to_bring %><% } %>
+      <% if (s.category === 'legal') { %><div class="note">This service is provided by our licensed attorney for matters the attorney accepts. Vista staff who are not attorneys do not provide legal advice. This page is general information and does not replace advice about your own situation.</div>
+      <% } else { %><div class="note">This is a support service. It is not legal advice. For legal advice or representation, we can connect you with our licensed attorney.</div><% } %>
+      <% if (faqs.length) { %><h2>Questions</h2><div class="faq"><% faqs.forEach(function (f) { %><details><summary><%= f.question %></summary><div class="ans"><%- f.answer %></div></details><% }) %></div><% } %>
+    </div>
+    <aside class="infocard">
+      <h3>Next step</h3>
+      <p>Call or request a time and we will talk through your situation in private.</p>
+      <div class="btn-row"><a class="btn btn-navy btn-sm" href="/appointment?service=<%= encodeURIComponent(s.title) %>"><%= t('cta.schedule') %></a><a class="btn btn-line btn-sm" href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a></div>
+      <% if (others.length) { %><h3>Related</h3><ul class="checklist"><% others.forEach(function (o) { %><li><a href="/services/<%= o.slug %>"><%= o.title %></a></li><% }) %></ul><% } %>
+    </aside>
+  </div>
+</section>

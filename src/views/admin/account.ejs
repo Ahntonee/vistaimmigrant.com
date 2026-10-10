@@ -1,0 +1,32 @@
+<% if (mode === 'password') { %>
+<form class="card form" method="post" action="/admin/account/password" style="max-width:520px">
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <% if (user.must_change) { %><div class="flash warn">Please choose your own password before continuing.</div><% } %>
+  <% if (error) { %><div class="flash warn" role="alert"><%= error %></div><% } %>
+  <div><label for="c">Current password</label><input id="c" type="password" name="current" autocomplete="current-password" required></div>
+  <div><label for="n">New password</label><input id="n" type="password" name="password" autocomplete="new-password" minlength="12" required><p class="help">At least 12 characters with upper case, lower case and a number.</p></div>
+  <div><label for="n2">Repeat new password</label><input id="n2" type="password" name="confirm" autocomplete="new-password" required></div>
+  <div><button class="btn btn-navy" type="submit">Change password</button></div>
+</form>
+<% } else { %>
+<div class="card" style="max-width:620px">
+  <% if (typeof codes !== 'undefined' && codes) { %>
+    <div class="flash">Two-step sign-in is on. Save these one-time recovery codes somewhere safe — they will not be shown again:</div>
+    <div class="pre"><%= codes.join('\n') %></div>
+  <% } %>
+  <% if (enabled) { %>
+    <h2>Two-step sign-in is on</h2>
+    <form class="form" method="post" action="/admin/account/2fa/disable"><input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+      <div><label for="pw">Confirm your password to turn it off</label><input id="pw" type="password" name="password" autocomplete="current-password" required></div>
+      <div><button class="btn btn-danger" type="submit">Turn off</button></div></form>
+  <% } else { %>
+    <h2>Turn on two-step sign-in</h2>
+    <p>Scan this with an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password, Authy), then enter the 6-digit code.</p>
+    <img src="<%= qr %>" alt="QR code to add this account to your authenticator app" width="220" height="220">
+    <p class="small dim">Can’t scan? Enter this key manually: <code><%= secret %></code></p>
+    <form class="form" method="post" action="/admin/account/2fa/enable"><input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+      <div><label for="cd">6-digit code</label><input id="cd" type="text" name="code" inputmode="numeric" autocomplete="one-time-code" required style="max-width:200px"></div>
+      <div><button class="btn btn-navy" type="submit">Turn on</button></div></form>
+  <% } %>
+</div>
+<% } %>

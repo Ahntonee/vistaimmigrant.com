@@ -1,0 +1,18 @@
+<%- include('_head', { title: g('about.title'), eyebrow: 'About Us', lead: g('about.lead'), crumbs: [{ name: 'About Us' }] }) %>
+<section>
+  <div class="wrap split">
+    <div class="prose"><%- g('about.body') %></div>
+    <aside class="infocard">
+      <h3><%= t('foot.visit') %></h3><p><%= g('biz.street') %><br><%= g('biz.city') %>, <%= g('biz.state') %> <%= g('biz.zip') %></p>
+      <h3><%= t('foot.hours') %></h3><p><%= g('biz.hours') %><br><strong><%= g('biz.hours_note') %></strong></p>
+      <h3><%= t('cta.call') %></h3><p><a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a></p>
+      <div class="btn-row"><a class="btn btn-navy btn-sm" href="/appointment"><%= t('cta.schedule') %></a></div>
+    </aside>
+  </div>
+</section>
+<%- include('_flagband') %>
+<section class="band-paper">
+  <div class="wrap">
+    <p class="values" style="font-size:1.6rem"><%= g('home.motto') %></p>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+<div class="card"><h2>Database backups</h2>
+  <p class="dim">Creates a consistent snapshot of all content, messages and appointments. The last 14 are kept. Uploaded images live in <code>public/uploads</code>; <code>npm run backup</code> copies those too (use it from cron).</p>
+  <form method="post" action="/admin/backups/create"><input type="hidden" name="_csrf" value="<%= csrfToken() %>"><button class="btn btn-navy" type="submit">Create backup now</button></form>
+</div>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>File</th><th>Size</th><th></th></tr></thead><tbody>
+<% if (!files.length) { %><tr><td colspan="3" class="dim">No backups yet.</td></tr><% } %>
+<% files.forEach(function (f) { %><tr><td><code><%= f.name %></code></td><td><%= (f.size / 1024).toFixed(0) %> KB</td><td class="num"><a class="btn btn-line sm" href="/admin/backups/download/<%= f.name %>">Download</a></td></tr><% }) %>
+</tbody></table></div>
+<div class="card" style="margin-top:1rem"><h2>Restore</h2><p class="dim">Stop the app, replace <code>data/vista.db</code> with the backup file (delete any <code>vista.db-wal</code> / <code>-shm</code> files), then start the app again.</p></div>

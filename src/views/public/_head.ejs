@@ -1,0 +1,8 @@
+<div class="page-head">
+  <div class="wrap">
+    <% if (typeof crumbs !== 'undefined' && crumbs.length) { %><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><% crumbs.forEach(function (c, i) { %><span>/</span><% if (c.path && i < crumbs.length - 1) { %><a href="<%= c.path %>"><%= c.name %></a><% } else { %><%= c.name %><% } %><% }) %></nav><% } %>
+    <% if (typeof eyebrow !== 'undefined' && eyebrow) { %><p class="eyebrow"><%= eyebrow %></p><% } %>
+    <h1><%= title %></h1>
+    <% if (typeof lead !== 'undefined' && lead) { %><p class="lead"><%= lead %></p><% } %>
+  </div>
+</div>

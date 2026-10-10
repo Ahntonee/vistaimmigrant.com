@@ -1,0 +1,5 @@
+<div class="toolbar"><a class="btn btn-navy sm" href="/admin/users/new" style="margin-left:auto">+ Invite user</a></div>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>2-step</th><th>Status</th><th></th></tr></thead><tbody>
+<% rows.forEach(function (r) { %><tr><td><strong><%= r.name %></strong></td><td><%= r.email %></td><td><span class="pill"><%= r.role %></span></td><td><%= r.totp_enabled ? 'On' : 'Off' %></td><td><span class="pill <%= r.active ? 'ok' : 'err' %>"><%= r.active ? 'Active' : 'Disabled' %></span></td><td class="num"><a class="btn btn-line sm" href="/admin/users/<%= r.id %>/edit">Edit</a></td></tr><% }) %>
+</tbody></table></div>
+<div class="card" style="margin-top:1rem"><h2>Roles</h2><dl class="kv"><dt>Owner</dt><dd>Everything, including settings, users, audit log and backups.</dd><dt>Editor</dt><dd>Content, media, SEO, redirects, appointments and messages. No settings or users.</dd><dt>Staff</dt><dd>Appointments, messages and closed dates only.</dd></dl></div>

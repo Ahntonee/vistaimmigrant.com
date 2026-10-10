@@ -1,0 +1,21 @@
+<div class="two">
+  <div class="card"><h2><%= m.subject || 'Message from ' + m.name %></h2>
+    <dl class="kv"><dt>From</dt><dd><%= m.name %></dd><dt>Email</dt><dd><a href="mailto:<%= m.email %>"><%= m.email %></a></dd><dt>Phone</dt><dd><%= m.phone || '—' %></dd><dt>Language</dt><dd><%= m.language %></dd><dt>Received</dt><dd><%= m.created_at %> UTC</dd></dl>
+    <div class="pre" style="margin-top:1rem"><%= m.message %></div>
+    <div class="toolbar" style="margin-top:1rem"><a class="btn btn-navy sm" href="mailto:<%= m.email %>?subject=<%= encodeURIComponent('Re: ' + (m.subject || 'Your message to Vista Immigrant Support')) %>">Reply by email</a><a class="btn btn-line sm" href="/admin/messages">Back</a></div>
+  </div>
+  <div>
+    <div class="card"><h2>Actions</h2>
+      <form method="post" action="/admin/messages/<%= m.id %>" class="toolbar" style="margin:0"><input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+        <button class="btn btn-line sm" name="action" value="star"><%= m.starred ? 'Unstar' : 'Star' %></button>
+        <button class="btn btn-line sm" name="action" value="unread">Mark unread</button>
+        <% if (m.status === 'archived') { %><button class="btn btn-line sm" name="action" value="unarchive">Unarchive</button><% } else { %><button class="btn btn-line sm" name="action" value="archive">Archive</button><% } %>
+        <% if (m.status === 'spam') { %><button class="btn btn-line sm" name="action" value="notspam">Not spam</button><% } else { %><button class="btn btn-line sm" name="action" value="spam">Spam</button><% } %>
+        <button class="btn btn-danger sm" name="action" value="delete" data-confirm="Delete this message and erase the sender's details?">Delete</button>
+      </form>
+    </div>
+    <div class="card"><h2>Internal note</h2>
+      <form method="post" action="/admin/messages/<%= m.id %>" class="form"><input type="hidden" name="_csrf" value="<%= csrfToken() %>"><input type="hidden" name="action" value="note"><textarea name="note" aria-label="Internal note" maxlength="1500"><%= m.note %></textarea><div><button class="btn btn-navy sm" type="submit">Save note</button></div></form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<form class="card form" method="post" action="<%= isNew ? '/admin/users' : '/admin/users/' + u.id %>" style="max-width:560px" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <div><label for="nm">Name</label><input id="nm" type="text" name="name" value="<%= u.name || '' %>" required><% if (errors.name) { %><p class="err" role="alert"><%= errors.name %></p><% } %></div>
+  <div><label for="em">Email</label><% if (isNew) { %><input id="em" type="email" name="email" value="<%= u.email || '' %>" required><% } else { %><input id="em" type="email" value="<%= u.email %>" disabled><% } %><% if (errors.email) { %><p class="err" role="alert"><%= errors.email %></p><% } %></div>
+  <div><label for="rl">Role</label><select id="rl" name="role"><% ['owner', 'editor', 'staff'].forEach(function (r) { %><option value="<%= r %>" <%= u.role === r ? 'selected' : '' %>><%= r %></option><% }) %></select></div>
+  <% if (isNew) { %><p class="help">A temporary password is generated and shown once. The user must choose their own at first sign-in.</p>
+  <% } else { %>
+  <div class="check"><input type="checkbox" id="ac" name="active" value="1" <%= u.active ? 'checked' : '' %>><label for="ac">Account is active</label></div>
+  <div class="check"><input type="checkbox" id="rp" name="reset_password" value="1"><label for="rp">Generate a new temporary password</label></div>
+  <% if (u.totp_enabled) { %><div class="check"><input type="checkbox" id="r2" name="reset_2fa" value="1"><label for="r2">Turn off their two-step sign-in (lost phone)</label></div><% } %>
+  <% } %>
+  <div style="display:flex;gap:.5rem"><button class="btn btn-navy" type="submit"><%= isNew ? 'Create user' : 'Save' %></button><a class="btn btn-line" href="/admin/users">Cancel</a></div>
+</form>

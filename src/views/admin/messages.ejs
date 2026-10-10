@@ -1,0 +1,10 @@
+<div class="tabs"><% ['inbox', 'starred', 'archived', 'spam'].forEach(function (t) { %><a class="<%= t === tab ? 'on' : '' %>" href="?tab=<%= t %>"><%= t[0].toUpperCase() + t.slice(1) %></a><% }) %></div>
+<div class="toolbar"><form method="get" class="toolbar" style="margin:0"><input type="hidden" name="tab" value="<%= tab %>"><input type="search" name="q" value="<%= q %>" placeholder="Search messages" aria-label="Search"><button class="btn btn-line sm" type="submit">Search</button></form>
+<a class="btn btn-line sm" style="margin-left:auto" href="/admin/messages/export.csv">Export CSV</a></div>
+<div class="tblwrap"><table class="tbl"><thead><tr><th></th><th>From</th><th>Subject / message</th><th>Received</th><th></th></tr></thead><tbody>
+<% if (!rows.length) { %><tr><td colspan="5" class="dim">Nothing here.</td></tr><% } %>
+<% rows.forEach(function (m) { %><tr><td class="num"><%= m.starred ? '★' : '' %></td>
+<td><a href="/admin/messages/<%= m.id %>"><strong><%= m.name %></strong></a> <% if (m.status === 'new') { %><span class="pill new">new</span><% } %><br><span class="dim small"><%= m.email %></span></td>
+<td><%= m.subject %><br><span class="dim small"><%= m.message.slice(0, 110) %><%= m.message.length > 110 ? '…' : '' %></span></td><td class="small dim"><%= m.created_at %> UTC</td>
+<td class="num"><a class="btn btn-line sm" href="/admin/messages/<%= m.id %>">Open</a></td></tr><% }) %>
+</tbody></table></div>

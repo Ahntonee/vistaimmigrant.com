@@ -1,0 +1,6 @@
+<%- include('_head', { title: 'Thank you', eyebrow: 'Message received' }) %>
+<section><div class="wrap narrow">
+  <p class="lead">Thank you for reaching out. We will reply by email or phone as soon as we can. Our hours are <%= g('biz.hours') %>.</p>
+  <p>If it is urgent, call <a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a>.</p>
+  <div class="btn-row"><a class="btn btn-navy" href="/appointment"><%= t('cta.schedule') %></a><a class="btn btn-line" href="/">Back to home</a></div>
+</div></section>

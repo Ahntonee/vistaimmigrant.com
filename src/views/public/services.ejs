@@ -1,0 +1,16 @@
+<%- include('_head', { title: 'Immigration Services', eyebrow: 'What we offer', lead: 'Support from the Vista team, and legal representation from a licensed attorney for matters the attorney accepts.', crumbs: [{ name: 'Immigration Services' }] }) %>
+<section>
+  <div class="wrap">
+    <p class="tagline-sm">Legal representation — by our licensed attorney, for matters accepted</p>
+    <ul class="rows">
+      <% legal.forEach(function (s) { %><li><a href="/services/<%= s.slug %>"><h3><%= s.title %></h3><p><%= s.summary %></p><span class="go" aria-hidden="true">→</span></a></li><% }) %>
+    </ul>
+    <p class="tagline-sm" style="margin-top:3rem">Support services — provided by Vista</p>
+    <ul class="rows">
+      <% support.forEach(function (s) { %><li><a href="/services/<%= s.slug %>"><h3><%= s.title %></h3><p><%= s.summary %></p><span class="go" aria-hidden="true">→</span></a></li><% }) %>
+    </ul>
+    <div class="note">Legal advice and representation are provided only by licensed attorneys, for the matters they accept. Vista staff who are not attorneys do not provide legal advice.</div>
+  </div>
+</section>
+<section class="cta"><div class="wrap"><h2>Not sure which service fits?</h2><p>Call or book a time. We will listen first, then explain how we can help.</p>
+<div class="btn-row"><a class="btn btn-gold" href="/appointment"><%= t('cta.schedule') %></a><a class="btn btn-line" style="color:#fff;border-color:#fff" href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= t('cta.call') %> — <%= g('biz.phone') %></a></div></div></section>

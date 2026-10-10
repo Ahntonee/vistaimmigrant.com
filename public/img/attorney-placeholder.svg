@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Placeholder portrait of an attorney">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b4a9e"/><stop offset="1" stop-color="#071a3f"/></linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".28" r=".62"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <rect width="600" height="600" fill="url(#glow)"/>
+  <path d="M30 600c0-130 90-212 270-212s270 82 270 212z" fill="#0c2a63"/>
+  <path d="M274 290h52v84c0 10-12 18-26 18s-26-8-26-18z" fill="#cbd7ee"/>
+  <ellipse cx="300" cy="212" rx="72" ry="88" fill="#dbe4f6"/>
+  <polygon points="300,384 254,462 300,600 346,462" fill="#f4f7fd"/>
+  <polygon points="300,384 214,418 250,540 276,462" fill="#123a80"/>
+  <polygon points="300,384 386,418 350,540 324,462" fill="#123a80"/>
+  <polygon points="300,432 288,456 300,566 312,456" fill="#b68a2e"/>
+  <g fill="none" stroke="#e2b650" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(386 470)">
+    <path d="M18 2v40M6 44h24M6 10h24M6 10l-5 12a5 5 0 0 0 10 0L6 10zM30 10l-5 12a5 5 0 0 0 10 0l-5-12z"/>
+  </g>
+</svg>

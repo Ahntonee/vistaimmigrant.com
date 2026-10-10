@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title><%= title %> · Vista Admin</title>
+<link rel="icon" type="image/png" href="/img/icon-32.png">
+<link rel="stylesheet" href="/css/site.css?v=1">
+<link rel="stylesheet" href="/css/admin.css?v=1">
+</head>
+<body class="adm" data-csrf="<%= csrfToken() %>">
+<div class="shell">
+  <aside class="side" id="side" aria-label="Admin navigation">
+    <a class="brand" href="/admin"><div class="plate"><img src="/img/logo-sm.webp" alt="Vista Immigrant Support Inc." width="96" height="60"></div></a>
+    <div class="brand"><div class="who"><%= user.name %> · <%= user.role %></div></div>
+    <% nav.forEach(function (grp) { %>
+      <h4><%= grp[0] %></h4>
+      <% grp[1].forEach(function (i) { %>
+        <a class="nl <%= section === i[2] ? 'on' : '' %>" href="<%= i[1] %>"><span><%= i[0] %></span><% if (i[2] === 'appointments' && counts.appts) { %><span class="badge-n"><%= counts.appts %></span><% } %><% if (i[2] === 'messages' && counts.msgs) { %><span class="badge-n"><%= counts.msgs %></span><% } %></a>
+      <% }) %>
+    <% }) %>
+    <h4>Account</h4>
+    <a class="nl <%= section === 'account' ? 'on' : '' %>" href="/admin/account/password"><span>Password</span></a>
+    <a class="nl" href="/admin/account/2fa"><span>Two-step sign-in</span></a>
+    <a class="nl" href="/" target="_blank" rel="noopener"><span>View site ↗</span></a>
+    <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrfToken() %>"><button class="lnk" type="submit">Sign out</button></form>
+  </aside>
+  <div class="main">
+    <div class="bar">
+      <div style="display:flex;align-items:center;gap:.75rem"><button class="btn btn-line btn-sm menu-t" type="button" id="side-toggle" aria-controls="side" aria-expanded="false">Menu</button><h1><%= title %></h1></div>
+      <div class="acts" id="bar-acts"></div>
+    </div>
+    <div class="content">
+      <% if (flash) { %><div class="flash" role="status"><%= flash %></div><% } %>
+      <% if (flash2) { %><div class="flash warn" role="alert"><%= flash2 %></div><% } %>
+      <%- body %>
+    </div>
+  </div>
+</div>
+<script src="/js/admin.js?v=1" defer></script>
+</body>
+</html>

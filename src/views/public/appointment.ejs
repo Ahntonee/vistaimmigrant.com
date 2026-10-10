@@ -1,0 +1,37 @@
+<%- include('_head', { title: 'Schedule an Appointment', eyebrow: 'By appointment only', lead: g('appt.intro'), crumbs: [{ name: 'Schedule an Appointment' }] }) %>
+<section>
+  <div class="wrap split">
+    <aside class="infocard">
+      <h3><%= t('foot.hours') %></h3><p>Monday–Saturday<br>9:00 AM–5:00 PM<br><strong><%= g('biz.hours_note') %></strong></p>
+      <h3><%= t('foot.visit') %></h3><p><%= g('biz.street') %><br><%= g('biz.city') %>, <%= g('biz.state') %> <%= g('biz.zip') %></p>
+      <h3>Prefer to talk?</h3><p><a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a></p>
+    </aside>
+    <form class="form" method="post" action="/appointment" novalidate id="appt-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="note" style="margin:0"><%= g('contact.helper') %></p>
+      <div class="row2">
+        <%- include('_field', { name: 'name', label: t('form.name'), type: 'text', req_: true, auto: 'name', max: 100 }) %>
+        <%- include('_field', { name: 'phone', label: t('form.phone'), type: 'tel', req_: true, auto: 'tel', max: 25 }) %>
+      </div>
+      <div class="row2">
+        <%- include('_field', { name: 'email', label: t('form.email') + ' (optional)', type: 'email', auto: 'email' }) %>
+        <%- include('_field', { name: 'language', label: t('form.language'), type: 'select', opts: LANGS }) %>
+      </div>
+      <%- include('_field', { name: 'service', label: t('form.service'), type: 'select', opts: [['', 'Not sure yet']].concat(svc.map(function (x) { return [x.title, x.title]; })) }) %>
+      <%- include('_field', { name: 'date', label: t('form.date'), type: 'date', req_: true, extra: 'min="' + minDate + '" data-slots="/appointment/slots"' }) %>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend style="font-weight:600;font-size:.92rem;padding:0;margin-bottom:.35rem;color:var(--navy-2)"><%= t('form.time') %> <span aria-hidden="true">*</span></legend>
+        <div class="slots" id="slots">
+          <% SLOTS.forEach(function (s) { %><span><input type="radio" id="t-<%= s %>" name="time" value="<%= s %>" <%= values.time === s ? 'checked' : '' %> required><label for="t-<%= s %>"><%= slotLabel(s) %></label></span><% }) %>
+        </div>
+        <p class="help" id="slot-help">Monday–Saturday. Pick a date to see open times.</p>
+        <% if (errors.date) { %><p class="err" role="alert"><%= errors.date %></p><% } %>
+      </fieldset>
+      <%- include('_field', { name: 'note', label: t('form.note'), type: 'textarea', max: 1000 }) %>
+      <div class="check"><input type="checkbox" id="consent" name="consent" value="1" <%= values.consent ? 'checked' : '' %> required><label for="consent"><%= t('form.consent') %></label></div>
+      <% if (errors.consent) { %><p class="err" role="alert"><%= errors.consent %></p><% } %>
+      <div><button class="btn btn-navy" type="submit"><%= t('cta.request') %></button></div>
+    </form>
+  </div>
+</section>

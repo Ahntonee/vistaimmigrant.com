@@ -1,0 +1,32 @@
+<%- include('_head', { title: g('contact.title'), eyebrow: 'Contact Us', lead: g('contact.body'), crumbs: [{ name: 'Contact Us' }] }) %>
+<% const addr = g('biz.street') + ', ' + g('biz.city') + ', ' + g('biz.state') + ' ' + g('biz.zip'); %>
+<section>
+  <div class="wrap split">
+    <aside class="infocard">
+      <h3><%= t('foot.visit') %></h3><p><%= g('biz.street') %><br><%= g('biz.city') %>, <%= g('biz.state') %> <%= g('biz.zip') %></p>
+      <a class="btn btn-line btn-sm mapbtn" href="https://www.openstreetmap.org/search?query=<%= encodeURIComponent(addr) %>" target="_blank" rel="noopener">Open map</a>
+      <a class="btn btn-line btn-sm mapbtn" href="https://www.google.com/maps/dir/?api=1&destination=<%= encodeURIComponent(addr) %>" target="_blank" rel="noopener">Get directions</a>
+      <h3><%= t('cta.call') %></h3><p><a href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= g('biz.phone') %></a></p>
+      <h3><%= t('form.email') %></h3><p><a href="mailto:<%= g('biz.email') %>"><%= g('biz.email') %></a></p>
+      <h3><%= t('foot.hours') %></h3><p><%= g('biz.hours') %><br><strong><%= g('biz.hours_note') %></strong></p>
+    </aside>
+    <form class="form" method="post" action="/contact" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="note" style="margin:0"><%= g('contact.helper') %></p>
+      <div class="row2">
+        <%- include('_field', { name: 'name', label: t('form.name'), type: 'text', req_: true, auto: 'name', max: 100 }) %>
+        <%- include('_field', { name: 'phone', label: t('form.phone'), type: 'tel', auto: 'tel', max: 25 }) %>
+      </div>
+      <div class="row2">
+        <%- include('_field', { name: 'email', label: t('form.email'), type: 'email', req_: true, auto: 'email' }) %>
+        <%- include('_field', { name: 'language', label: t('form.language'), type: 'select', opts: LANGS }) %>
+      </div>
+      <%- include('_field', { name: 'subject', label: t('form.subject'), type: 'text', max: 120 }) %>
+      <%- include('_field', { name: 'message', label: t('form.message'), type: 'textarea', req_: true }) %>
+      <div class="check"><input type="checkbox" id="consent" name="consent" value="1" <%= values.consent ? 'checked' : '' %> required><label for="consent"><%= t('form.consent') %></label></div>
+      <% if (errors.consent) { %><p class="err" role="alert"><%= errors.consent %></p><% } %>
+      <div><button class="btn btn-navy" type="submit"><%= t('cta.send') %></button></div>
+    </form>
+  </div>
+</section>

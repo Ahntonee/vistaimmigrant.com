@@ -1,0 +1,14 @@
+<%- include('_authtop', { title: 'Reset password' }) %>
+<h1>Reset password</h1>
+<% if (done) { %>
+<div class="flash" role="status">If that email belongs to an account, a reset link is on its way. It works for one hour.</div>
+<p style="text-align:center"><a href="/admin/login">Back to sign in</a></p>
+<% } else { %>
+<form class="form" method="post" action="/admin/forgot">
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <div><label for="email">Account email</label><input id="email" type="email" name="email" required autofocus autocomplete="username"></div>
+  <button class="btn btn-navy" type="submit">Send reset link</button>
+  <p class="small" style="text-align:center;margin:0"><a href="/admin/login">Back to sign in</a></p>
+</form>
+<% } %>
+<%- include('_authbot') %>

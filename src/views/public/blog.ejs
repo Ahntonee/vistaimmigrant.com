@@ -1,0 +1,12 @@
+<%- include('_head', { title: heading, eyebrow: 'Blog', lead: base === '/blog' ? 'Plain-language information for immigrants and their families. General information only, not legal advice.' : '', crumbs: [{ name: 'Blog', path: '/blog' }].concat(base === '/blog' ? [] : [{ name: heading }]) }) %>
+<section>
+  <div class="wrap">
+    <% if (cats.length) { %><div class="chips"><a class="chip" href="/blog" <%- base === '/blog' ? 'aria-current="true"' : '' %>>All</a><% cats.forEach(function (c) { %><a class="chip" href="/blog/category/<%= c.slug %>" <%- base === '/blog/category/' + c.slug ? 'aria-current="true"' : '' %>><%= c.name %></a><% }) %></div><% } %>
+    <% if (!posts.length) { %><p class="lead">No articles yet. Check back soon.</p><% } else { %>
+    <ul class="posts">
+      <% posts.forEach(function (p) { %><li><time datetime="<%= p.pub_date.slice(0, 10) %>"><%= u.fmtDate(p.pub_date) %><% if (p.category_name) { %><br><%= p.category_name %><% } %></time><div><h3><a href="/blog/<%= p.slug %>"><%= p.title %></a></h3><p><%= p.excerpt || u.excerptOf(p.body) %></p></div></li><% }) %>
+    </ul>
+    <% if (pages > 1) { %><nav class="pager" aria-label="Pagination"><% for (let i = 1; i <= pages; i++) { %><% if (i === page) { %><span aria-current="page"><%= i %></span><% } else { %><a href="<%= base %>?page=<%= i %>"><%= i %></a><% } %><% } %></nav><% } %>
+    <% } %>
+  </div>
+</section>

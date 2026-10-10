@@ -1,0 +1,12 @@
+<%- include('_head', { title: p.title, eyebrow: p.category_name || 'Blog', crumbs: [{ name: 'Blog', path: '/blog' }, { name: p.title }] }) %>
+<article>
+  <div class="wrap narrow" style="padding-block:3rem 2rem">
+    <p class="meta"><%= u.fmtDate(p.pub_date) %> · <%= rt %> min read · <%= p.author %></p>
+    <% if (p.featured_image) { %><img class="feat" src="<%= p.featured_image %>" alt="<%= p.featured_alt %>" width="1200" height="630"><% } %>
+    <div class="prose"><%- p.body %></div>
+    <% if (tags.length) { %><div class="chips" style="margin-top:2rem"><% tags.forEach(function (t2) { %><a class="chip" href="/blog/tag/<%= t2.slug %>">#<%= t2.name %></a><% }) %></div><% } %>
+    <div class="note">This article is general information and is not legal advice. Vista Immigrant Support Inc. is not a law firm. For advice about your situation, speak with a licensed attorney.</div>
+    <div class="btn-row"><a class="btn btn-navy" href="/appointment"><%= t('cta.schedule') %></a><a class="btn btn-line" href="tel:+1<%= g('biz.phone').replace(/\D/g, '') %>"><%= t('cta.call') %> — <%= g('biz.phone') %></a></div>
+  </div>
+</article>
+<% if (related.length) { %><section class="band-paper"><div class="wrap"><h2>Keep reading</h2><ul class="posts"><% related.forEach(function (r) { %><li><time datetime="<%= r.pub_date.slice(0, 10) %>"><%= u.fmtDate(r.pub_date) %></time><div><h3><a href="/blog/<%= r.slug %>"><%= r.title %></a></h3><p><%= r.excerpt || u.excerptOf(r.body) %></p></div></li><% }) %></ul></div></section><% } %>

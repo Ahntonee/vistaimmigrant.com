@@ -1,0 +1,63 @@
+<%
+const action = isNew ? '/admin/' + key : '/admin/' + key + '/' + row.id;
+const main = cfg.fields.filter(function (f) { return !f.side && !f.seo; });
+const side = cfg.fields.filter(function (f) { return f.side; });
+const seoF = cfg.fields.filter(function (f) { return f.seo; });
+function val(f) { const v = row[f.n]; return v === undefined || v === null ? '' : v; }
+function fieldHtml(f) {
+  const id = 'f-' + f.n, v = val(f), er = errors[f.n];
+  const aria = er ? ' aria-invalid="true" aria-describedby="' + id + '-e"' : '';
+  const req = f.req ? ' required' : '';
+  let h = '';
+  if (f.t === 'check') {
+    h = '<div class="check"><input type="checkbox" id="' + id + '" name="' + f.n + '" value="1" ' + (Number(v) || v === 'on' ? 'checked' : '') + '><label for="' + id + '">' + u.esc(f.l) + '</label></div>';
+  } else {
+    h = '<div><label for="' + id + '">' + u.esc(f.l) + (f.req ? ' <span aria-hidden="true">*</span>' : '') + (f.seo && (f.n === 'meta_title' || f.n === 'meta_description') ? '<span class="cnt" data-count-for="' + id + '"></span>' : '') + '</label>';
+    if (f.t === 'rich') h += '<div class="rte" data-rte><textarea id="' + id + '" name="' + f.n + '" hidden>' + u.esc(v) + '</textarea></div>';
+    else if (f.t === 'textarea') h += '<textarea id="' + id + '" name="' + f.n + '" maxlength="' + (f.max || 2000) + '"' + req + aria + '>' + u.esc(v) + '</textarea>';
+    else if (f.t === 'select') h += '<select id="' + id + '" name="' + f.n + '"' + aria + '>' + f.opts.map(function (o) { return '<option value="' + u.esc(o[0]) + '" ' + (String(o[0]) === String(v) ? 'selected' : '') + '>' + u.esc(o[1]) + '</option>'; }).join('') + '</select>';
+    else if (f.t === 'ref') h += '<select id="' + id + '" name="' + f.n + '">' + refOptions(f.ref).map(function (o) { return '<option value="' + o[0] + '" ' + (String(o[0]) === String(v || '') ? 'selected' : '') + '>' + u.esc(o[1]) + '</option>'; }).join('') + '</select>';
+    else if (f.t === 'datetime') h += '<input type="datetime-local" id="' + id + '" name="' + f.n + '" value="' + u.esc(row[f.n] && String(row[f.n]).length > 10 && String(row[f.n]).indexOf('T') < 0 ? utcToEtInput(row[f.n]) : row[f.n] || '') + '"' + aria + '>';
+    else if (f.t === 'date') h += '<input type="date" id="' + id + '" name="' + f.n + '" value="' + u.esc(v) + '"' + req + aria + '>';
+    else if (f.t === 'image') h += '<div class="field-img"><input type="text" id="' + id + '" name="' + f.n + '" value="' + u.esc(v) + '" placeholder="/uploads/…" ' + aria + '><button class="btn btn-line sm" type="button" data-pick="' + id + '">Choose</button></div>';
+    else if (f.t === 'slug') h += '<input type="text" id="' + id + '" name="' + f.n + '" value="' + u.esc(v) + '" maxlength="120" autocomplete="off" spellcheck="false"' + aria + '>';
+    else h += '<input type="text" id="' + id + '" name="' + f.n + '" value="' + u.esc(v) + '" maxlength="' + (f.max || 300) + '"' + req + aria + '>';
+    if (f.help) h += '<p class="help">' + u.esc(f.help) + '</p>';
+    if (er) h += '<p class="err" id="' + id + '-e" role="alert">' + u.esc(er) + '</p>';
+    h += '</div>';
+  }
+  return h;
+}
+%>
+<form class="form" method="post" action="<%= action %>" id="edit-form" data-key="<%= key %>" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <% if (Object.keys(errors).length) { %><div class="flash warn" role="alert">Please fix the highlighted fields.</div><% } %>
+  <div class="editor-grid">
+    <div style="display:grid;gap:1.1rem">
+      <div class="card" style="margin:0;display:grid;gap:1.1rem"><% main.forEach(function (f) { %><%- fieldHtml(f) %><% }) %></div>
+      <% if (seoF.length) { %>
+      <details class="seo" open><summary>Search &amp; sharing (SEO)</summary><div>
+        <div class="serp" aria-label="Search result preview"><div class="u" id="serp-u"></div><div class="t" id="serp-t"></div><div class="d" id="serp-d"></div></div>
+        <% seoF.forEach(function (f) { %><%- fieldHtml(f) %><% }) %>
+      </div></details>
+      <% } %>
+    </div>
+    <div style="display:grid;gap:1.1rem">
+      <% if (side.length) { %><div class="card" style="margin:0;display:grid;gap:1.1rem"><h2>Settings</h2><% side.forEach(function (f) { %><%- fieldHtml(f) %><% }) %></div><% } %>
+      <% if (!isNew && typeof revs !== 'undefined' && revs.length) { %>
+      <div class="card" style="margin:0"><h2>Revisions</h2><p class="help dim">Snapshots saved before each edit (last 20).</p>
+        <% revs.forEach(function (rv) { %><div style="display:flex;justify-content:space-between;gap:.5rem;align-items:center;margin-bottom:.4rem" class="small"><span><%= rv.created_at %> UTC<br><span class="dim"><%= rv.user_email %></span></span>
+          <button class="btn btn-line sm" type="submit" formaction="/admin/<%= key %>/<%= row.id %>/restore-revision/<%= rv.id %>" data-confirm="Restore this version? Your current version is saved as a revision first.">Restore</button></div><% }) %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="sticky-save">
+    <button class="btn btn-navy" type="submit"><%= isNew ? 'Create' : 'Save changes' %></button>
+    <a class="btn btn-line" href="/admin/<%= key %>">Cancel</a>
+    <% if (!isNew && cfg.url && row.slug) { %><a class="btn btn-line" href="<%= cfg.url(row.slug) %>" target="_blank" rel="noopener">View on site ↗</a><% } %>
+    <% if (!isNew) { %><button class="btn btn-danger" type="submit" formaction="/admin/<%= key %>/<%= row.id %>/delete" data-confirm="<%= cfg.soft ? 'Move to trash?' : 'Delete permanently? This cannot be undone.' %>" style="margin-left:auto"><%= cfg.soft ? 'Move to trash' : 'Delete' %></button><% } %>
+  </div>
+</form>
+<dialog class="picker" id="picker" aria-label="Media library"><h2 style="font-family:var(--serif)">Choose an image</h2><div class="pgrid" id="pgrid"></div><button class="btn btn-line" type="button" id="picker-close">Close</button> <a href="/admin/media" target="_blank" class="small">Upload new in the media library ↗</a></dialog>
+<script type="application/json" id="site-meta"><%- JSON.stringify({ title: g('seo.title_template'), site: g('seo.site_url'), base: cfg.url ? cfg.url('') : '/' }) %></script>

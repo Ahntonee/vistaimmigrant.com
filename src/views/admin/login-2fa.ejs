@@ -1,0 +1,10 @@
+<%- include('_authtop', { title: 'Two-step sign-in' }) %>
+<h1>Enter your code</h1>
+<p class="dim small" style="text-align:center">Open your authenticator app and enter the 6-digit code. You can also use a recovery code.</p>
+<% if (error) { %><div class="flash warn" role="alert"><%= error %></div><% } %>
+<form class="form" method="post" action="/admin/login/2fa">
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <div><label for="code">Code</label><input id="code" type="text" name="code" inputmode="numeric" autocomplete="one-time-code" required autofocus></div>
+  <button class="btn btn-navy" type="submit">Verify</button>
+</form>
+<%- include('_authbot') %>

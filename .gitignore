@@ -1,0 +1,8 @@
+node_modules/
+data/*.db*
+data/backups/
+.env
+public/uploads/*
+!public/uploads/.gitkeep
+scripts/preview-logo.png
+*.log

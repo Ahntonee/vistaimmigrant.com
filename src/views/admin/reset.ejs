@@ -1,0 +1,14 @@
+<%- include('_authtop', { title: 'Choose a new password' }) %>
+<h1>New password</h1>
+<% if (!valid) { %>
+<div class="flash warn" role="alert">This link is invalid or has expired.</div><p style="text-align:center"><a href="/admin/forgot">Request a new link</a></p>
+<% } else { %>
+<% if (error) { %><div class="flash warn" role="alert"><%= error %></div><% } %>
+<form class="form" method="post" action="/admin/reset/<%= token %>">
+  <input type="hidden" name="_csrf" value="<%= csrfToken() %>">
+  <div><label for="p1">New password</label><input id="p1" type="password" name="password" autocomplete="new-password" minlength="12" required autofocus><p class="help">At least 12 characters with upper case, lower case and a number.</p></div>
+  <div><label for="p2">Repeat password</label><input id="p2" type="password" name="confirm" autocomplete="new-password" required></div>
+  <button class="btn btn-navy" type="submit">Save password</button>
+</form>
+<% } %>
+<%- include('_authbot') %>

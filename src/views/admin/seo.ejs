@@ -1,0 +1,13 @@
+<div class="grid4">
+  <a class="stat" href="/sitemap.xml" target="_blank" rel="noopener"><b><%= items.length + 7 %></b><span>URLs in sitemap ↗</span></a>
+  <a class="stat" href="/robots.txt" target="_blank" rel="noopener"><b>robots</b><span>View robots.txt ↗</span></a>
+  <a class="stat" href="/admin/redirects"><b><%= redirects %></b><span>Redirect rules</span></a>
+  <a class="stat" href="/admin/content/seo"><b>Settings</b><span>Titles, verification, defaults</span></a>
+</div>
+<div class="card"><h2>Page audit</h2><p class="dim small">Checks every published page, post and service. Fix the flagged items in each editor.</p>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>Type</th><th>Title</th><th>Meta title</th><th>Description</th><th>Issues</th></tr></thead><tbody>
+<% items.forEach(function (i) { const t = i.meta_title || i.title, d = u.stripTags(i.meta_description); %>
+<tr><td><%= i.type %></td><td><a href="<%= i.edit %>"><strong><%= i.title %></strong></a><br><span class="dim small"><%= i.url %></span></td>
+<td><span class="pill <%= t.length > 60 ? 'err' : 'ok' %>"><%= t.length %></span></td><td><span class="pill <%= d.length > 160 || d.length < 70 ? 'draft' : 'ok' %>"><%= d.length %></span></td>
+<td><% if (!i.issues.length) { %><span class="pill ok">OK</span><% } else { %><ul style="margin:0;padding-left:1rem" class="small"><% i.issues.forEach(function (x) { %><li><%= x %></li><% }) %></ul><% } %></td></tr>
+<% }) %></tbody></table></div></div>
