@@ -48,6 +48,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const r = await c.get(p);
     ok(r.status === 200, `GET ${p} → 200`, r.status);
     ok(r.text.includes(DISC), `  disclaimer in footer of ${p}`);
+    ok(!/placeholder|before launch|please have (this|these)|please replace|lorem ipsum|\bTODO\b/i.test(r.text.replace(/<script[\s\S]*?<\/script>/g, '')), `  no internal notes visible on ${p}`);
     ok(!/suite|206\s?B/i.test(r.text), `  no suite number on ${p}`);
     ok(r.text.includes('100 E Linton Blvd'), `  address on ${p}`);
   }

@@ -23,7 +23,7 @@ const ico = {
     </div>
     <div class="hero-art">
       <span class="ring" aria-hidden="true"></span><span class="ring ring-2" aria-hidden="true"></span>
-      <% const heroImg = g('home.hero_image') || g('attorney.photo') || ''; const heroAlt = heroImg ? (g('home.hero_image_alt') || g('attorney.photo_alt') || '') : 'Placeholder portrait of an attorney'; %>
+      <% const heroImg = g('home.hero_image') || g('attorney.photo') || ''; const heroAlt = heroImg ? (g('home.hero_image_alt') || g('attorney.photo_alt') || '') : 'Illustration of a legal professional'; %>
       <div class="hero-card hero-photo"><img src="<%= heroImg || '/img/attorney-placeholder.svg' %>" alt="<%= heroAlt %>" width="600" height="600" fetchpriority="high"></div>
       <ul class="float-chips" aria-label="At a glance">
         <li class="c1"><%- ico.scale %><span><%= lang === 'es' ? 'Abogada con licencia' : 'Licensed attorney' %><small><%= lang === 'es' ? 'en casos aceptados' : 'for matters accepted' %></small></span></li>
