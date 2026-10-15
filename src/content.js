@@ -60,7 +60,7 @@ const FIELDS = [
   ['Attorney', 'attorney.photo_alt', 'Portrait alt text', 'text', 'Portrait of Attorney Latoya Renae Stephenson'],
   ['Attorney', 'attorney.title', 'Headline', 'text', 'Legal representation for immigration matters'],
   ['Attorney', 'attorney.note', 'Representation note', 'textarea', 'Attorney services may include representation before Immigration Court and USCIS for matters accepted by the attorney.'],
-  ['Attorney', 'attorney.bio', 'Biography (HTML allowed)', 'richtext', '<p>Attorney Latoya Renae Stephenson provides legal representation in immigration matters for clients of Vista Immigrant Support Inc.</p><p><em>This biography is a placeholder. Please replace it with the attorney\'s own words from the admin dashboard (Site content → Attorney).</em></p>'],
+  ['Attorney', 'attorney.bio', 'Biography (HTML allowed)', 'richtext', '<p>Attorney Latoya Renae Stephenson provides legal representation in immigration matters for clients of Vista Immigrant Support Inc.</p>'],
   ['Attorney', 'attorney.areas', 'Practice areas (one per line)', 'textarea', 'Asylum\nWork permits (EAD)\nGreen card / adjustment of status\nFamily-based immigration\nRemoval proceedings\nMotions to reopen and appeals'],
   ['Attorney', 'attorney.bar', 'Bar admission (shown only if filled)', 'text', ''],
   ['Attorney', 'attorney.education', 'Education (shown only if filled)', 'text', ''],

@@ -2,7 +2,7 @@
 
 ## Needs the client / attorney before launch
 1. **Attorney name — resolved.** The written copy, *Latoya Renae Stephenson, Esq.*, is confirmed as correct and is what the site uses. (The logo artwork's shorter "Latoya Renae, Esq." is not used on the site.)
-2. **Attorney portrait, bio, bar admission, education, languages.** None were supplied, so none are invented. The bio is a clearly marked placeholder; bar/education/languages stay hidden until filled in. `Person` structured data only includes fields that are filled.
+2. **Attorney portrait, bio, bar admission, education, languages.** None were supplied, so none are invented. The bio is a single neutral sentence (the visible "placeholder" note was removed at the client's request; replace it with her own words in the dashboard); bar/education/languages stay hidden until filled in. `Person` structured data only includes fields that are filled.
 3. **Legal copy review.** The 14 service pages, 5 blog posts, 3 landing pages, FAQs, privacy policy and terms are general-information drafts. They avoid outcome promises, do not state that Vista gives legal advice, and label legal services as "provided by our licensed attorney for matters accepted." The attorney should read them before launch.
 4. **Immigration Document Assistance wording.** Written conservatively (organizing, copying, scanning; *no* choosing forms or advice). Have the attorney confirm this matches what staff may lawfully do in Florida.
 5. **Spanish translation of the disclaimer** and the Spanish landing page are mine, not a certified translation. Please have a Spanish speaker / the attorney review.
