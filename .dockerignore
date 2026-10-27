@@ -1,0 +1,16 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+data
+public/uploads/*
+!public/uploads/.gitkeep
+client-preview
+client-preview.zip
+scripts/preview-logo.png
+BUILD_PROMPT.md
+*.log
+Dockerfile
+.dockerignore
