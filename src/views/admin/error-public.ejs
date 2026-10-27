@@ -1,0 +1,5 @@
+<%- include('_authtop', { title: 'Something went wrong' }) %>
+<h1><%= code === 404 ? 'Page not found' : 'Please try again' %></h1>
+<div class="flash warn" role="alert"><%= message %></div>
+<p style="text-align:center"><a class="btn btn-navy" href="/admin/login">Back to sign in</a></p>
+<%- include('_authbot') %>

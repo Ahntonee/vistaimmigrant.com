@@ -130,12 +130,14 @@ app.use((req, res, next) => {
 });
 
 const adminRender = require('./routes/admin').render;
+// signed-out visitors have no dashboard layout, so they get the simple sign-in style error page
+const adminError = (req, res, d) => (req.user ? adminRender(req, res, 'error', d) : res.render('admin/error-public', d));
 app.use(require('./routes/public'));
 
 // ---- errors ----
 app.use((req, res) => {
   res.status(404);
-  if (req.path.startsWith('/admin')) return adminRender(req, res, 'error', { code: 404, message: 'Page not found.', title: 'Not found' });
+  if (req.path.startsWith('/admin')) return adminError(req, res, { code: 404, message: 'Page not found.', title: 'Not found' });
   res.page('404', { seo: { title: 'Page not found', noindex: true } });
 });
 // eslint-disable-next-line no-unused-vars
@@ -144,7 +146,7 @@ app.use((err, req, res, next) => {
   if (status >= 500) console.error(err);
   const message = status >= 500 ? 'Something went wrong on our side. Please try again in a moment, or call us.' : err.message;
   res.status(status);
-  if (req.path.startsWith('/admin')) return adminRender(req, res, 'error', { code: status, message, title: 'Error' });
+  if (req.path.startsWith('/admin')) return adminError(req, res, { code: status, message, title: 'Error' });
   if (res.page) return res.page('500', { seo: { title: 'Something went wrong', noindex: true }, code: status, message });
   res.type('text').send(message);
 });

@@ -73,6 +73,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   ok(r.status === 302 && r.loc.startsWith('/admin/login'), '/admin redirects to login when signed out');
   r = await a.post('/admin/login', { email: 'owner@test.local', password: PW });
   ok(r.status === 403, 'login POST without CSRF token rejected', r.status);
+  ok(/Back to sign in/.test(r.text) && !r.text.includes("<pre>Forbidden"), 'rejected sign-in shows a helpful page, not a bare "Forbidden"');
   let t = await a.token('/admin/login');
   r = await a.post('/admin/login', { _csrf: t, email: 'owner@test.local', password: 'wrong-password-123' });
   ok(r.status === 401 && /not right/.test(r.text), 'wrong password → generic 401');

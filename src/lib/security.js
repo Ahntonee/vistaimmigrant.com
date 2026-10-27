@@ -97,7 +97,7 @@ function csrf(req, res, next) {
   const sent = (req.body && req.body._csrf) || req.headers['x-csrf-token'] || req.query._csrf || '';
   const a = Buffer.from(String(sent)), b = Buffer.from(req.session.csrf || 'x');
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
-    const err = new Error('Invalid or missing security token. Please go back, refresh the page, and try again.');
+    const err = new Error('Your sign-in page expired, or your browser is blocking cookies. Please reload the page and try again.');
     err.status = 403;
     return next(err);
   }
